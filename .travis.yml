@@ -1,0 +1,29 @@
+
+language: node_js
+
+node_js:
+  - "node"
+
+services:
+  - postgresql
+
+addons:
+  postgresql: '9.4'
+
+sudo: required
+env:
+  - NODE_ENV=test
+  - POST=3000
+  - SECRET='THISISASCERCTKEY'
+
+before_script:
+  - psql -c "CREATE DATABASE stories_test;" -U postgres
+  - psql -c "CREATE DATABASE stories;" -U postgres
+  - psql -c "CREATE USER stories WITH PASSWORD 'stories';" -U postgres
+  - npm install --save sequelize-cli
+  - yarn add jest
+  - yarn run migrate
+  
+
+script:
+  - yarn test

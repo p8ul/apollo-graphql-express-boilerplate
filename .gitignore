@@ -1,0 +1,34 @@
+# Dependency directory
+node_modules/
+
+# Private files
+.env
+.env.dev
+
+# Coverage directory
+coverage 
+/server/coverage
+
+*.test.js.snap
+
+# Runtime data
+pids
+*.pid
+*.seed
+
+# Logs
+logs
+*.log
+.DS_Store
+
+#build
+build
+
+# Vscode
+.vscode
+
+# Intellij
+.idea/
+
+.editorConfig
+data/
