@@ -1,5 +1,5 @@
 {
-  "name": "student-list",
+  "name": "apollo-boilerplate",
   "version": "1.0.0",
   "main": "src/index.js",
   "license": "MIT",
@@ -13,7 +13,7 @@
     "seed:undo": "cd server && sequelize db:seed:undo:all",
     "setup": "cd server && NODE_ENV=test sequelize sequelize db:migrate",
     "pretest": "cd server && NODE_ENV=test sequelize db:migrate",
-    "test": "NODE_ENV=test jest --colors --detectOpenHandles --coverage",
+    "test": "NODE_ENV=test jest --colors --detectOpenHandles --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
     "posttest": "cd server && NODE_ENV=test sequelize db:migrate:undo:all"
   },
   "dependencies": {
@@ -33,6 +33,7 @@
     "pg": "^7.9.0",
     "pg-hstore": "^2.3.2",
     "sequelize": "^5.3.3",
+    "sequelize-cli": "^5.4.0",
     "sqlite3": "^4.0.6"
   },
   "devDependencies": {
@@ -44,6 +45,7 @@
     "@babel/preset-env": "^7.4.3",
     "@babel/runtime": "^7.4.3",
     "apollo-server-testing": "^2.4.8",
+    "coveralls": "^3.0.3",
     "eslint": "^5.16.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.17.1",
