@@ -18,7 +18,7 @@ env:
 
 before_script:
   - psql -c "CREATE DATABASE stories_test;" -U postgres
-  - psql -c "CREATE DATABASE stories;" -U postgres
+  - psql -c "CREATE DATABASE test_db;" -U postgres
   - psql -c "CREATE USER stories WITH PASSWORD 'stories';" -U postgres
   - npm install --save sequelize-cli
   - yarn add jest
@@ -26,4 +26,5 @@ before_script:
   
 
 script:
-  - yarn test
+  - yarn run migrate
+  - jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage

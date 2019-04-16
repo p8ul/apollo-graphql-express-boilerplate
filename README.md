@@ -31,5 +31,9 @@ A GraphQL with Apollo, Express and PostgreSQL boilerplate project.
     TEST_DATABASE_NAME= # test database name
 ```
 
+### Running the app
+* `yarn start`
+* navigate to `http://localhost:4000/graphql`
+
 ### testing
 * run `yarn test`

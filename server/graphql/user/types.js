@@ -15,6 +15,18 @@ const userType = gql`
   type UserAuth {
     token: String
   }
+
+  extend type Query {
+    user(id: ID!): User
+    users: [User!]
+  }
+
+  extend type Mutation {
+    register(name: String!, email: String!, password: String!): UserAuth
+    login(email: String!, password: String!): UserAuth
+    deleteUser(id: Int!): UserConnection
+    updateUser(id: Int!, name: String!): User
+  }
 `;
 
 export default userType;

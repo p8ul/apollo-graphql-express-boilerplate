@@ -19,12 +19,12 @@ describe('userResolver', () => {
   });
 
   it('should list users', async () => {
-    const result = await userResolvers.list(_, __, ctx);
+    const result = await userResolvers.Query.users(_, __, ctx);
     expect(result[0]).toHaveProperty('name');
   });
 
   it('should retrieve a user', async () => {
-    const result = await userResolvers.retrieve(_, { id: userDetails.id }, ctx);
+    const result = await userResolvers.Query.user(_, { id: userDetails.id }, ctx);
     expect(result.name).toEqual(userDetails.name);
   });
 
@@ -34,21 +34,23 @@ describe('userResolver', () => {
       email: `email${faker.random.uuid()}@example.com`,
       password: faker.internet.password(),
     };
-    await userResolvers.create(_, data, ctx);
+    await userResolvers.Mutation.register(_, data, ctx);
     const { authScope: { user } } = ctx;
     userDetails = user;
-    const result = await userResolvers.update(_, { id: userDetails.id, name: 'john' }, ctx);
+    const result = await userResolvers.Mutation.updateUser(_, { id: userDetails.id, name: 'john' }, ctx);
     expect(result.name).toEqual('john');
   });
 
   it('should delete a user', async () => {
-    const result = await userResolvers.delete(_, { id: userDetails.id }, ctx);
+    const result = await userResolvers.Mutation.deleteUser(_, { id: userDetails.id }, ctx);
     expect(result).toEqual(undefined);
   });
 
   it('should not delete another user account', async () => {
     try {
-      await userResolvers.delete(_, { id: userDetails.id }, { models, authScope: { user: null } });
+      await userResolvers.Mutation.deleteUser(
+        _, { id: userDetails.id }, { models, authScope: { user: null } },
+      );
     } catch (error) {
       expect(error.message).toBe('You cannot delete this user account!');
     }
@@ -60,30 +62,30 @@ describe('userResolver', () => {
       email: `email${faker.random.uuid()}@example.com`,
       password: faker.internet.password(),
     };
-    const result = await userResolvers.create(_, data, ctx);
+    const result = await userResolvers.Mutation.register(_, data, ctx);
     expect(result).toHaveProperty('token');
   });
 
   it('should login a user', async () => {
-    const result = await userResolvers.login(_, { email: userDetails.email, password: '123456' }, ctx);
+    const result = await userResolvers.Mutation.login(_, { email: userDetails.email, password: '123456' }, ctx);
     expect(result).toHaveProperty('token');
   });
 
   it('should not login with invalid credentials', async () => {
     try {
-      await userResolvers.login(_, { email: userDetails.email }, ctx);
+      await userResolvers.Mutation.login(_, { email: userDetails.email }, ctx);
     } catch (error) {
       expect(error.message).toBe('Invalid email or password');
     }
     try {
-      await userResolvers.login(_, { email: 'userDetails.emai' }, ctx);
+      await userResolvers.Mutation.login(_, { email: 'userDetails.emai' }, ctx);
     } catch (error) {
       expect(error.message).toBe('Invalid email or password');
     }
   });
 
   it('should get logged in user from the token', async () => {
-    const result = await userResolvers.login(_, { email: userDetails.email, password: '123456' }, ctx);
+    const result = await userResolvers.Mutation.login(_, { email: userDetails.email, password: '123456' }, ctx);
     const user = await getUser(result.token);
     expect(user.user.email).toEqual(userDetails.email);
   });

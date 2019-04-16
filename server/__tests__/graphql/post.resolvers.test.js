@@ -27,33 +27,33 @@ describe('postResolvers', () => {
   });
 
   it('should list posts', async () => {
-    const result = await postResolvers.list(_, __, ctx);
+    const result = await postResolvers.Query.posts(_, __, ctx);
     expect(result[0].title).toEqual(post.title);
   });
 
   it('should retrieve a post', async () => {
-    const result = await postResolvers.retrieve(_, { id: post.id }, ctx);
+    const result = await postResolvers.Query.getPost(_, { id: post.id }, ctx);
     expect(result.title).toEqual(post.title);
   });
 
   it('should update a post', async () => {
-    const result = await postResolvers.update(_, { id: post.id, title: 'new title' }, ctx);
+    const result = await postResolvers.Mutation.updatePost(_, { id: post.id, title: 'new title' }, ctx);
     expect(result.title).toEqual('new title');
   });
 
   it('should delete a post', async () => {
-    const result = await postResolvers.delete(_, { id: post.id }, ctx);
+    const result = await postResolvers.Mutation.deletePost(_, { id: post.id }, ctx);
     expect(result).toEqual(1);
   });
 
   it('should create a post', async () => {
-    const result = await postResolvers.create(_, { body: 'body', title: 'new title' }, ctx);
+    const result = await postResolvers.Mutation.addPost(_, { body: 'body', title: 'new title' }, ctx);
     expect(result.title).toEqual('new title');
   });
 
   it('should not create a post if user is not authenticated', async () => {
     try {
-      await postResolvers.create(_, { body: 'body', title: 'new title' }, { models, authScope: { user: null } });
+      await postResolvers.Mutation.addPost(_, { body: 'body', title: 'new title' }, { models, authScope: { user: null } });
     } catch (error) {
       expect(error.message).toBe('You must be logged in!');
     }
