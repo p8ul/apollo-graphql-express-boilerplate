@@ -1,3 +1,5 @@
+[![Coverage Status](https://coveralls.io/repos/github/p8ul/apollo-graphql-express-boilerplate/badge.svg?branch=master)](https://coveralls.io/github/p8ul/apollo-graphql-express-boilerplate?branch=master)
+[![Build Status](https://travis-ci.org/p8ul/apollo-graphql-express-boilerplate.svg?branch=master)](https://travis-ci.org/p8ul/apollo-graphql-express-boilerplate)
 # apollo-graphql-express-boilerplate
 A GraphQL with Apollo, Express and PostgreSQL boilerplate project.
 
