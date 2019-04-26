@@ -1,7 +1,16 @@
 // eslint-disable-next-line
+import { pubsub } from '../../index';
+// eslint-disable-next-line
 import { User } from '../../models';
 
+const POST_ADDED = 'POST_ADDED';
+
 const postResolvers = {
+  Subscription: {
+    postAdded: {
+      subscribe: () => pubsub.asyncIterator([POST_ADDED]),
+    },
+  },
   Post: {
     user: async ({ user }) => User.findOne({ _id: user }),
   },
@@ -12,12 +21,16 @@ const postResolvers = {
     getPost: async (root, { id }, { models: { Post } }) => Post.findByPk(id),
   },
   Mutation: {
-    addPost: async (root, { title, body }, { models: { Post }, authScope }) => {
+    addPost: async (root, { title, body, file }, { models: { Post }, authScope }) => {
       if (authScope.user === null) {
         throw new Error('You must be logged in!');
       }
+
       try {
-        const post = await Post.create({ title, body, UserId: authScope.user.id });
+        const post = await Post.create({
+          title, body, file, UserId: authScope.user.id,
+        });
+        pubsub.publish(POST_ADDED, { postAdded: { title, body, file } });
         return post;
       } catch (error) {
         throw new Error(error);

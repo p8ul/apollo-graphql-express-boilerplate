@@ -19,9 +19,11 @@
   "dependencies": {
     "@babel/polyfill": "^7.4.3",
     "and": "^0.0.3",
+    "apollo-server": "^2.4.8",
     "apollo-server-core": "^2.4.8",
     "apollo-server-express": "^2.4.8",
     "bcryptjs": "^2.4.3",
+    "cloudinary": "^1.14.0",
     "dependencies": "^0.0.1",
     "dotenv": "^7.0.0",
     "dotenv-safe": "^6.1.0",

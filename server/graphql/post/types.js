@@ -1,11 +1,15 @@
 import { gql } from 'apollo-server-express';
 
-const postTypes = gql`    
+const postTypes = gql` 
+    type Subscription {
+        postAdded: Post
+    }   
     type Post {
         id: Int!
         title: String!
         body: String!
         user: User
+        file: String
         createdAt: Date
     }
     type PostConnection {
@@ -19,7 +23,7 @@ const postTypes = gql`
     }
     
     extend type Mutation {
-        addPost(title: String!, body: String!): Post
+        addPost(title: String!, body: String!, file: String): Post
         updatePost(title: String!, body:String!, id: Int!): Post  
         deletePost(id: Int!): PostConnection 
     }

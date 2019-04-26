@@ -14,6 +14,9 @@ module.exports = {
     body: {
       type: Sequelize.TEXT,
     },
+    file: {
+      type: Sequelize.STRING,
+    },
     UserId: {
       type: Sequelize.INTEGER,
       allowNull: false,
