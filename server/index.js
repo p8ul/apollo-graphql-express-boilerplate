@@ -14,6 +14,18 @@ export default pubsub;
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  formatError: (error) => {
+    // remove the internal sequelize error message
+    // leave only the important validation error
+    const message = error.message
+      .replace('SequelizeValidationError: ', '')
+      .replace('Validation error: ', '');
+
+    return {
+      // ...error, // uncomment this if you want to receive internal errors
+      message,
+    };
+  },
   context: async ({ req, connection }) => {
     if (connection) {
       // check connection for metadata
