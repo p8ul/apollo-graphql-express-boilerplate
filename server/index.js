@@ -1,19 +1,20 @@
 import express from 'express';
 import http from 'http';
 import { ApolloServer } from 'apollo-server-express';
-import { PubSub } from 'apollo-server';
 import typeDefs from './graphql/combinedTypes';
-// eslint-disable-next-line
 import resolvers from './graphql/combinedResolvers';
 import models from './models';
 import { port } from './config';
 import { getUser } from './utils';
+import CapitalizeDirective, { FormattableDateDirective } from './graphql/directives';
 
-export const pubsub = new PubSub();
-export default pubsub;
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  schemaDirectives: {
+    capitalize: CapitalizeDirective,
+    date: FormattableDateDirective,
+  },
   formatError: (error) => {
     // remove the internal sequelize error message
     // leave only the important validation error

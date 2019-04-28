@@ -1,5 +1,5 @@
-// eslint-disable-next-line
-import { pubsub } from '../../index';
+import { Sequelize } from 'sequelize';
+import { pubsub } from '../../constants';
 // eslint-disable-next-line
 import { User } from '../../models';
 
@@ -7,7 +7,7 @@ const POST_ADDED = 'POST_ADDED';
 
 const postResolvers = {
   Subscription: {
-    postAdded: {
+    posts: {
       subscribe: () => pubsub.asyncIterator([POST_ADDED]),
     },
   },
@@ -15,9 +15,32 @@ const postResolvers = {
     user: async ({ user }) => User.findOne({ _id: user }),
   },
   Query: {
-    posts: async (root, args, { models: { Post } }) => Post.findAll({
-      order: [['id', 'DESC']],
-    }),
+    posts: async (root, { cursor, limit = 25 }, { models: { Post } }) => {
+      const cursorOptions = cursor
+        ? {
+          where: {
+            id: {
+              [Sequelize.Op.lt]: cursor,
+            },
+          },
+        } : {};
+      const edges = await Post.findAll({
+        order: [['id', 'DESC']],
+        limit,
+        ...cursorOptions,
+      });
+      let endCursor;
+
+      try {
+        endCursor = edges[edges.length - 1].id;
+      } catch (error) {
+        endCursor = 0;
+      }
+      return {
+        edges,
+        endCursor,
+      };
+    },
     getPost: async (root, { id }, { models: { Post } }) => Post.findByPk(id),
   },
   Mutation: {
@@ -30,7 +53,7 @@ const postResolvers = {
         const post = await Post.create({
           title, body, file, UserId: authScope.user.id,
         });
-        pubsub.publish(POST_ADDED, { postAdded: { title, body, file } });
+        pubsub.publish(POST_ADDED, { posts: { edges: [{ title, body, file }], endCursor: '80' } });
         return post;
       } catch (error) {
         throw new Error(error);

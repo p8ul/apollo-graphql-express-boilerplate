@@ -6,6 +6,12 @@ import postTypes from './post/types';
 
 const queryTypes = gql`
   scalar Date
+
+  directive @capitalize on FIELD_DEFINITION
+  directive @date(
+    defaultFormat: String = "MMMM Do YYYY"
+  ) on FIELD_DEFINITION
+
   type Query {
     _: Boolean
   }

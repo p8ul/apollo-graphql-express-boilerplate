@@ -2,26 +2,28 @@ import { gql } from 'apollo-server-express';
 
 const postTypes = gql` 
     type Subscription {
-        postAdded: Post
-    }   
+        posts: PostConnection
+    } 
+
     type Post {
-        id: Int!
-        title: String!
+        id: Int
+        title: String! @capitalize
         body: String!
         user: User
         file: String
-        createdAt: Date
+        createdAt: Date @date(defaultFormat: "MMMM Do YYYY")
     }
+
     type PostConnection {
-        count: Int
-        posts: [Post]
+        endCursor: Int
+        edges: [Post]
     }
 
     extend type Query {
-        posts: [Post!]
+        posts(cursor: String, limit: Int): PostConnection
         getPost(id: Int!): Post
     }
-    
+
     extend type Mutation {
         addPost(title: String!, body: String!, file: String): Post
         updatePost(title: String!, body:String!, id: Int!): Post  

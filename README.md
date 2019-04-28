@@ -3,10 +3,23 @@
 # apollo-graphql-express-boilerplate
 A GraphQL with Apollo, Express and PostgreSQL boilerplate project.
 
+# Features 
+- Apollo-server
+    - Queries, Mutations, Subscriptions, Error Handling, Playground, Custom Scalars, Authentication, Integration Testing, Schema directives
+- Authentication
+    - powered by JWT
+    - Sign Up, Sign In
+- PostgreSQL Database with Sequelize
+    - entities: Users & Posts
+- Authorization
+    - protected resolvers
+- Testing
+
 # Stack
 - Node.js
 - Express
 - PostgreSQL
+- Sequelize
 - apollo-server-express
 - JWT authentication
 - Jest
