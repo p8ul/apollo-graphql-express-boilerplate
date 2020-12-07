@@ -33,6 +33,8 @@ A GraphQL with Apollo, Express and PostgreSQL boilerplate project.
 * `create two databases for testing and development`
 * `create a .env file and copy the keys from .env.example file`
 
+```cp .env.example .env```
+
 ```bash
     # Your Graphql Port
     PORT=4000
